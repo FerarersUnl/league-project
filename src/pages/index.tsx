@@ -1,11 +1,14 @@
-import { useState } from "react";
 import { useRouter } from "next/router";
+import { Heading } from "@chakra-ui/react";
+import { useState } from "react";
 
-function Home() {
+import type { NextPage } from "next";
+
+
+const Home: NextPage = () => {
     const router = useRouter();
-
     const [username, setUsername] = useState('');
-
+    
     const handleUser = () => {
         router.push(`/user/${username}`);
     }
@@ -18,7 +21,7 @@ function Home() {
     
     return (
         <div>
-            <h1>Inicio</h1>
+            <Heading>Inicio</Heading>
             <input 
                 type="text"
                 value={username}
