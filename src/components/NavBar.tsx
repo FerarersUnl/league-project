@@ -119,7 +119,7 @@ export default function WithSubnavigation() {
                         variant={"link"}
                         href={"#"}
                     >
-                        Sign In
+                        Inicia Sesion
                     </Button>
                     <Button
                         as={"a"}
@@ -133,7 +133,7 @@ export default function WithSubnavigation() {
                             bg: "blue.500",
                         }}
                     >
-                        Sign Up
+                        Registrate
                     </Button>
                 </Stack>
             </Flex>

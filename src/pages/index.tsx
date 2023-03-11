@@ -1,5 +1,11 @@
 import { useRouter } from "next/router";
-import { Heading } from "@chakra-ui/react";
+import {
+    Heading,
+    InputGroup,
+    Input,
+    Button,
+    InputRightElement,
+} from "@chakra-ui/react";
 import { useState } from "react";
 
 import type { NextPage } from "next";
@@ -20,16 +26,23 @@ const Home: NextPage = () => {
 
     return (
         <div>
-            <Heading>Inicio</Heading>
-            <input
-                type="text"
-                value={username}
-                onChange={(e) => {
-                    setUsername(e.currentTarget.value);
-                }}
-                onKeyDown={handleUserEnter}
-            />
-            <button onClick={handleUser}>Buscar</button>
+            <Heading as="h1" size="4xl" noOfLines={1}>
+                Encuentra un jugador
+            </Heading>
+            <InputGroup>
+                <Input
+                    placeholder="Nombre"
+                    type="text"
+                    value={username}
+                    onChange={(e) => {
+                        setUsername(e.currentTarget.value);
+                    }}
+                    onKeyDown={handleUserEnter}
+                />
+                <InputRightElement width="4.5rem">
+                    <Button onClick={handleUser}>Buscar</Button>
+                </InputRightElement>
+            </InputGroup>
         </div>
     );
 };
