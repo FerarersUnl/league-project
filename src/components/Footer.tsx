@@ -9,6 +9,7 @@ import {
     useColorModeValue,
     VisuallyHidden,
 } from "@chakra-ui/react";
+import styles from "./Footer.module.css";
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { ReactNode } from "react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
@@ -77,8 +78,8 @@ export default function FooterBar() {
                 <Stack direction={"row"} spacing={6} alignItems={"center"}>
                     <LogoLetters />
                     <Text>
-                        © {new Date().getFullYear()} LatamVortex. All rights
-                        reserved
+                        © {new Date().getFullYear()} LatamVortex. Todos los
+                        derechos reservados.
                     </Text>
                 </Stack>
                 <Stack direction={"row"} spacing={6} alignItems={"center"}>

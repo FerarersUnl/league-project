@@ -1,3 +1,4 @@
+import "./styles.css";
 import Header from "@/components/NavBar";
 import FooterBar from "@/components/Footer";
 import theme from "../theme";

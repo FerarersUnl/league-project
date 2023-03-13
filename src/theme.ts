@@ -5,6 +5,17 @@ const config: ThemeConfig = {
     useSystemColorMode: true,
 };
 
-const theme = extendTheme({ config });
+const theme = extendTheme({
+    config,
+    colors: {
+        LatamVortex: {
+            100: "#4a81ca",
+            300: "#72abe6",
+            500: "#99c1ea",
+            700: "#c1d7ee",
+            900: "#e9eef3",
+        },
+    },
+});
 
 export default theme;
