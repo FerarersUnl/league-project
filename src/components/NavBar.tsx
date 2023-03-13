@@ -21,6 +21,7 @@ import {
     ChevronDownIcon,
     ChevronRightIcon,
 } from "@chakra-ui/icons";
+import Image from "next/image";
 
 interface NavItem {
     label: string;
@@ -52,13 +53,27 @@ const NAV_ITEMS: Array<NavItem> = [
     },
 ];
 
+const Logo = () => (
+    <Box>
+        <Link href="/">
+            <Image
+                priority
+                src="/logo.svg"
+                width={43}
+                height={43}
+                alt="LatamVortex"
+            />
+        </Link>
+    </Box>
+);
+
 export default function WithSubnavigation() {
     const { isOpen, onToggle } = useDisclosure();
 
     return (
         <Box>
             <Flex
-                bg={useColorModeValue("white", "gray.800")}
+                bg={useColorModeValue("gray.100", "gray.900")}
                 color={useColorModeValue("gray.600", "white")}
                 minH={"60px"}
                 py={{ base: 2 }}
@@ -97,10 +112,8 @@ export default function WithSubnavigation() {
                         })}
                         fontFamily={"heading"}
                         color={useColorModeValue("gray.800", "white")}
-                    >
-                        Logo
-                    </Text>
-
+                    ></Text>
+                    <Logo />
                     <Flex display={{ base: "none", md: "flex" }} ml={10}>
                         <DesktopNav />
                     </Flex>
@@ -151,7 +164,12 @@ const DesktopNav = () => {
     const popoverContentBgColor = useColorModeValue("white", "gray.800");
 
     return (
-        <Stack direction={"row"} spacing={4}>
+        <Stack
+            direction={"row"}
+            spacing={4}
+            alignItems={"center"}
+            justifyContent={"center"}
+        >
             {NAV_ITEMS.map((navItem) => (
                 <Box key={navItem.label}>
                     <Popover trigger={"hover"} placement={"bottom-start"}>
@@ -159,7 +177,7 @@ const DesktopNav = () => {
                             <Link
                                 p={2}
                                 href={navItem.href ?? "#"}
-                                fontSize={"sm"}
+                                fontSize={"md"}
                                 fontWeight={500}
                                 color={linkColor}
                                 _hover={{
@@ -230,12 +248,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
                     align={"center"}
                     flex={1}
                 >
-                    <Icon
-                        color={"#4a81ca"}
-                        w={5}
-                        h={5}
-                        as={ChevronRightIcon}
-                    />
+                    <Icon color={"#4a81ca"} w={5} h={5} as={ChevronRightIcon} />
                 </Flex>
             </Stack>
         </Link>

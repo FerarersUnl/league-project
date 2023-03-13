@@ -12,7 +12,19 @@ import {
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { ReactNode } from "react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import logoFooter from "/logoLetters.png";
+import Image from "next/image";
+
+const LogoLetters = () => (
+    <Box>
+        <Image
+            priority
+            src="/logoLetters.svg"
+            width={100}
+            height={100}
+            alt="LatamVortex"
+        />
+    </Box>
+);
 
 const SocialButton = ({
     children,
@@ -62,11 +74,13 @@ export default function FooterBar() {
                 justify={{ base: "center", md: "space-between" }}
                 align={{ base: "center", md: "center" }}
             >
-                <Text>
-                    
-                    © {new Date().getFullYear()} LatamVortex. All rights
-                    reserved
-                </Text>
+                <Stack direction={"row"} spacing={6} alignItems={"center"}>
+                    <LogoLetters />
+                    <Text>
+                        © {new Date().getFullYear()} LatamVortex. All rights
+                        reserved
+                    </Text>
+                </Stack>
                 <Stack direction={"row"} spacing={6} alignItems={"center"}>
                     <SocialButton label={"Twitter"} href={"#"}>
                         <FaTwitter />
