@@ -130,7 +130,7 @@ export default function WithSubnavigation() {
                         fontSize={"sm"}
                         fontWeight={400}
                         variant={"link"}
-                        href={"#"}
+                        href={"/login"}
                     >
                         Inicia Sesion
                     </Button>
@@ -141,7 +141,7 @@ export default function WithSubnavigation() {
                         fontWeight={600}
                         color={"white"}
                         bg={"#4a81ca"}
-                        href={"#"}
+                        href={"/register"}
                         _hover={{
                             bg: "#72abe6",
                         }}
