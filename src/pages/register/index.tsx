@@ -98,6 +98,7 @@ const SignIn: NextPage = (props) => {
                                 size="lg"
                                 bg={"blue.400"}
                                 color={"white"}
+                                type="submit"
                                 _hover={{
                                     bg: "blue.500",
                                 }}
