@@ -18,12 +18,13 @@ export default function UserName({
 export const getServerSideProps: GetServerSideProps<{ data: Data }> = async (
     context
 ) => {
-    const API = process.env.RIOT_API;
+    const API = process.env.RIOT_API_KEY;
     const USER = context.query.username;
     const res = await fetch(
         `https://la1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${USER}?api_key=${API}`
     );
     const data: Data = await res.json();
+    console.log(data);
 
     return {
         props: {
