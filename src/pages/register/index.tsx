@@ -33,7 +33,7 @@ const SignIn: NextPage = (props) => {
             <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
                 <Stack align={"center"}>
                     <Heading fontSize={"4xl"} textAlign={"center"}>
-                        Inicia sesión
+                        Regístrate
                     </Heading>
                     <Text fontSize={"lg"} color={"gray.600"}>
                         para conocer más sobre tu juego 🎮

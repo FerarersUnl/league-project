@@ -24,6 +24,7 @@ import {
 } from "@chakra-ui/react";
 import { useState, ReactElement } from "react";
 import { FcNext } from "react-icons/fc";
+
 import type { NextPage } from "next";
 
 interface RoadMap {
