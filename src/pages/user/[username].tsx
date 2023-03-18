@@ -18,6 +18,23 @@ import {
     Badge,
     Center,
     Link,
+    filter,
+    Card,
+    CardBody,
+    CardFooter,
+    SimpleGrid,
+    Grid,
+    GridItem,
+    CardHeader,
+    Tfoot,
+    Table,
+    TableCaption,
+    TableContainer,
+    Tbody,
+    Td,
+    Th,
+    Thead,
+    Tr,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -49,12 +66,54 @@ export default function UserName({
     match,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const matchData = match.history?.map((match, i) => (
-        <Stack key={i}>
-            <Text fontSize="2xl">Partida número {i + 1}</Text>
-            <Text fontSize="xl">
-                Duración de partida: {formatDuration(match.info.gameDuration)}
-            </Text>
-        </Stack>
+        <Card
+            direction={{ base: "column", sm: "row" }}
+            overflow="hidden"
+            variant="outline"
+            p={5}
+        >
+            <Image
+                objectFit="cover"
+                maxW={{ base: "100%", sm: "200px" }}
+                src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
+                alt="Caffe Latte"
+            />
+            <Stack key={i}>
+                <CardBody>
+                    <Heading size="md">Partida número {i + 1}</Heading>
+                    <Text py={"2"}>
+                        Duración de partida:{" "}
+                        {formatDuration(match.info.gameDuration)}
+                    </Text>
+                    <TableContainer>
+                        <Table size={"sm"}>
+                            <Tbody>
+                                <Tr>
+                                    <Td>Summoner 1</Td>
+                                    <Td>Summoner 6</Td>
+                                </Tr>
+                                <Tr>
+                                    <Td>Summoner 2</Td>
+                                    <Td>Summoner 7</Td>
+                                </Tr>
+                                <Tr>
+                                    <Td>Summoner 3</Td>
+                                    <Td>Summoner 8</Td>
+                                </Tr>
+                                <Tr>
+                                    <Td>Summoner 4</Td>
+                                    <Td>Summoner 9</Td>
+                                </Tr>
+                                <Tr>
+                                    <Td>Summoner 5</Td>
+                                    <Td>Summoner 10</Td>
+                                </Tr>
+                            </Tbody>
+                        </Table>
+                    </TableContainer>
+                </CardBody>
+            </Stack>
+        </Card>
     ));
 
     const [username, setUsername] = useState("");
@@ -100,13 +159,16 @@ export default function UserName({
                     </InputRightElement>
                 </InputGroup>
             </Stack>
-            <Stack py={{ base: 20, md: 28 }}>
-                <Box>
-                    <Heading as="h1">Información de {data.name}</Heading>
-                    <Text fontSize="2xl">Nivel {data.level}</Text>
-                </Box>
+            <Stack py={{ base: 20, md: 10 }}>
+                <Heading>Información de {data.name}</Heading>
+                <Text fontSize="2xl">Nivel {data.level}</Text>
             </Stack>
-            {matchData}
+            <SimpleGrid
+                spacing={4}
+                templateColumns="repeat(auto-fill, minmax(580px, 1fr))"
+            >
+                {matchData}
+            </SimpleGrid>
         </Container>
     );
 }
@@ -143,6 +205,16 @@ export const getServerSideProps: GetServerSideProps<{
             });
         })
     );
+
+    const totalUsers = await Promise.all(
+        totalMatches.map(async (users, i) => {
+            return await rAPI.summoner.getByPUUID({
+                region: PlatformId.LA1,
+                puuid: users.metadata.participants[i],
+            });
+        })
+    );
+    console.log(totalUsers);
 
     const data: userData = {
         name: summoner.name,
