@@ -133,21 +133,37 @@ export default function UserName({
               spacing={1}
               mt={3}
             >
-              {summonerItems.map((item, i) => (
-                <Image
-                  src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/item/${item}.png`}
-                  boxSize="40px"
-                  key={i}
-                  rounded="md"
-                  onError={(
-                    e: React.SyntheticEvent<HTMLImageElement, Event>
-                  ) => {
-                    e.currentTarget.src =
-                      'https://www.colorhexa.com/3182ce.png';
-                  }}
-                  alt="No image"
-                />
-              ))}
+              {summonerItems.map((item, i) =>
+                wasWin ? (
+                  <Image
+                    src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/item/${item}.png`}
+                    boxSize="40px"
+                    key={i}
+                    rounded="md"
+                    onError={(
+                      e: React.SyntheticEvent<HTMLImageElement, Event>
+                    ) => {
+                      e.currentTarget.src =
+                        'https://www.colorhexa.com/3182ce.png';
+                    }}
+                    alt="No image"
+                  />
+                ) : (
+                  <Image
+                    src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/item/${item}.png`}
+                    boxSize="40px"
+                    key={i}
+                    rounded="md"
+                    onError={(
+                      e: React.SyntheticEvent<HTMLImageElement, Event>
+                    ) => {
+                      e.currentTarget.src =
+                        'https://www.colorhexa.com/E53E3E.png';
+                    }}
+                    alt="No image"
+                  />
+                )
+              )}
             </Stack>
           </CardBody>
         </Stack>
