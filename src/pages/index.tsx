@@ -10,8 +10,8 @@ const Home: NextPage = () => {
   return (
     <Container maxW={'7xl'}>
       <InfoHeader />
-      <InfoContent id="functional" />
       <SearchBar />
+      <InfoContent id="functional" />
       <InfoFooter id="more" />
     </Container>
   );
