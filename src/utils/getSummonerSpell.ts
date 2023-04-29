@@ -1,4 +1,4 @@
-function getSummonerSpellImage(summonerSpellId: number): string {
+export function getSummonerSpell(summonerSpellId: number): string {
   switch (summonerSpellId) {
     case 1:
       return 'SummonerBoost';
@@ -34,5 +34,3 @@ function getSummonerSpellImage(summonerSpellId: number): string {
       return '';
   }
 }
-
-export default getSummonerSpellImage;

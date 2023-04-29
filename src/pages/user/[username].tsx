@@ -1,51 +1,29 @@
-import router from 'next/router';
 import { RiotAPI, RiotAPITypes, PlatformId } from '@fightmegg/riot-api';
+import SearchBarUser from '@/components/SearchBarUser';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import {
-  Button,
   Container,
   Heading,
-  Input,
-  InputGroup,
-  InputRightElement,
   Stack,
   Text,
   Image,
   Card,
   CardBody,
   SimpleGrid,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Tr,
+  Box,
 } from '@chakra-ui/react';
-import { useState } from 'react';
 import Link from 'next/link';
-import getSummonerSpellImage from '@/lib/getSummonerSpell';
-
-type userData = {
-  name: string | undefined;
-  iconId: number | undefined;
-  level: number | undefined;
-};
-
-type matchData = {
-  history: RiotAPITypes.MatchV5.MatchDTO[] | undefined;
-};
-
-function formatDuration(durationSeconds: number): string {
-  const minutes = Math.floor(durationSeconds / 60);
-  const seconds = durationSeconds % 60;
-  return `${minutes.toString().padStart(2, '0')}:${seconds
-    .toString()
-    .padStart(2, '0')}`;
-}
+import { userData, matchData } from '@/lib/types';
+import { getSummonerSpell } from '@/utils/getSummonerSpell';
+import { formatDuration } from '@/utils/formatDuration';
+import { formatTimePassed } from '@/utils/formatTimePassed';
+import { getGamemode } from '@/utils/getGamemode';
 
 export default function UserName({
   data,
   match,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const version = '13.8.1';
   const matchData = match.history?.map((match, i) => {
     const mainSummoner = match.info.participants.findIndex(
       (participant) => participant.summonerName === data.name
@@ -57,136 +35,135 @@ export default function UserName({
       match.info.participants[mainSummoner].summoner2Id,
     ];
     const kda = `${match.info.participants[mainSummoner].kills}/${match.info.participants[mainSummoner].deaths}/${match.info.participants[mainSummoner].assists}`;
+    const summonerItems = [
+      match.info.participants[mainSummoner].item0,
+      match.info.participants[mainSummoner].item1,
+      match.info.participants[mainSummoner].item2,
+      match.info.participants[mainSummoner].item3,
+      match.info.participants[mainSummoner].item4,
+      match.info.participants[mainSummoner].item5,
+      match.info.participants[mainSummoner].item6,
+    ];
 
     return (
       <Card
         direction={{ base: 'column', sm: 'row' }}
         overflow="hidden"
         variant="outline"
-        bg={wasWin ? 'rgba(220, 38, 38, .25)' : 'rgba(66, 153, 225, .25)'}
-        borderColor={wasWin ? 'red.500' : 'blue.500'}
+        bg={wasWin ? 'rgba(66, 153, 225, .25)' : 'rgba(220, 38, 38, .25)'}
+        borderColor={wasWin ? 'blue.500' : 'red.500'}
         borderWidth="3px"
         p={5}
         key={i}
       >
-        <Stack>
+        <Stack
+          bg={wasWin ? 'blue.500' : 'red.500'}
+          rounded={'md'}
+          p={5}
+          alignContent={'center'}
+          alignItems={'center'}
+        >
+          <Text textAlign={'center'} fontSize="xl">
+            {mainChampion}
+          </Text>
           <Image
             borderRadius="full"
             objectFit="cover"
-            boxSize="120px"
-            src={`http://ddragon.leagueoflegends.com/cdn/12.6.1/img/champion/${mainChampion}.png`}
+            boxSize={'60px'}
+            src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${mainChampion}.png`}
             alt={mainChampion}
           />
-          <Text textAlign={'center'} fontSize="2xl">
-            {mainChampion}
-          </Text>
+
           <Stack direction={'row'} justifyContent={'center'}>
             <Image
-              src={`http://ddragon.leagueoflegends.com/cdn/12.6.1/img/spell/${getSummonerSpellImage(
+              src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/spell/${getSummonerSpell(
                 summonerSpells[0]
               )}.png`}
               boxSize="40px"
-              alt={getSummonerSpellImage(summonerSpells[0])}
+              alt={getSummonerSpell(summonerSpells[0])}
             />
             <Image
-              src={`http://ddragon.leagueoflegends.com/cdn/12.6.1/img/spell/${getSummonerSpellImage(
+              src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/spell/${getSummonerSpell(
                 summonerSpells[1]
               )}.png`}
               boxSize="40px"
-              alt={getSummonerSpellImage(summonerSpells[1])}
+              alt={getSummonerSpell(summonerSpells[1])}
             />
           </Stack>
-          <Text textAlign={'center'} fontSize="xl">
-            {kda}
+          <Text textAlign={'center'} fontSize="md">
+            {formatTimePassed(match.info.gameCreation)}
+            <br />
+            {kda} KDA
           </Text>
         </Stack>
-
         <Stack>
           <CardBody>
-            <Heading size="md">Partida {i + 1}</Heading>
-            <Text py={'2'}>
-              Duración de partida: {formatDuration(match.info.gameDuration)}
-            </Text>
-            <TableContainer>
-              <Table size={'sm'}>
-                <Tbody>
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Tr key={i}>
-                      {[
-                        match.info.participants[i],
-                        match.info.participants[i + 5],
-                      ].map((participant, j) => (
-                        <Td borderColor={'white'} key={j}>
-                          <Link href={`/user/${participant.summonerName}`}>
-                            {participant.summonerName}
-                          </Link>
-                        </Td>
-                      ))}
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
+            <Heading size="md">
+              Partida {i + 1} - {getGamemode(match.info.gameMode)}
+            </Heading>
+            <Heading size={'sm'} py={'2'}>
+              Duración de partida: {formatDuration(match.info.gameDuration)} -{' '}
+              {wasWin ? 'Victoria' : 'Derrota'}
+            </Heading>
+            <SimpleGrid columns={2} spacing={1}>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <>
+                  <Box fontSize={'small'}>
+                    <Link
+                      href={`/user/${match.info.participants[i].summonerName}`}
+                    >
+                      {match.info.participants[i].summonerName}
+                    </Link>
+                  </Box>
+                  <Box fontSize={'small'}>
+                    <Link
+                      href={`/user/${
+                        match.info.participants[i + 5].summonerName
+                      }`}
+                    >
+                      {match.info.participants[i + 5].summonerName}
+                    </Link>
+                  </Box>
+                </>
+              ))}
+            </SimpleGrid>
+            <Stack
+              direction={'row'}
+              justifyContent={'center'}
+              spacing={1}
+              mt={3}
+            >
+              {summonerItems.map((item, i) => (
+                <Image
+                  src={`http://ddragon.leagueoflegends.com/cdn/${version}/img/item/${item}.png`}
+                  boxSize="40px"
+                  key={i}
+                  rounded="md"
+                  onError={(
+                    e: React.SyntheticEvent<HTMLImageElement, Event>
+                  ) => {
+                    e.currentTarget.src =
+                      'https://www.colorhexa.com/3182ce.png';
+                  }}
+                  alt="No image"
+                />
+              ))}
+            </Stack>
           </CardBody>
         </Stack>
       </Card>
     );
   });
 
-  const [username, setUsername] = useState('');
-
-  const handleUser = () => {
-    router.push(`/user/${username}`);
-  };
-
-  const handleUserEnter = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      router.push(`/user/${username}`);
-    }
-  };
-
-  const handleUserClick = (e: React.MouseEvent) => {
-    router.push(`/user/${username}`);
-  };
-
   return (
     <Container maxW={'7xl'} p="12">
-      <Stack
-        textAlign={'center'}
-        align={'center'}
-        spacing={{ base: 8, md: 10 }}
-      >
-        <Heading
-          fontWeight={600}
-          fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
-          lineHeight={'110%'}
-        >
-          Conoce los detalles de{' '}
-          <Text as={'span'} color={'#4a81ca'}>
-            tu usuario
-          </Text>
-        </Heading>
-        <InputGroup>
-          <Input
-            placeholder="Nombre"
-            type="text"
-            value={username}
-            onChange={(e) => {
-              setUsername(e.currentTarget.value);
-            }}
-            onKeyDown={handleUserEnter}
-          />
-          <InputRightElement width="4.5rem">
-            <Button onClick={handleUser}>Buscar</Button>
-          </InputRightElement>
-        </InputGroup>
-      </Stack>
+      <SearchBarUser />
       <Stack py={{ base: 20, md: 10 }}>
         <Heading>Información de {data.name}</Heading>
         <Image
           borderRadius="full"
           boxSize="150px"
-          src={`https://ddragon.leagueoflegends.com/cdn/12.6.1/img/profileicon/${data.iconId}.png`}
+          src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/profileicon/${data.iconId}.png`}
         />
         <Text fontSize="2xl">Nivel {data.level}</Text>
       </Stack>
