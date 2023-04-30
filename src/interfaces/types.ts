@@ -4,6 +4,11 @@ export type userData = {
   name: string | undefined;
   iconId: number | undefined;
   level: number | undefined;
+  isComplete: boolean;
+};
+
+export type userStats = {
+  statistics: RiotAPITypes.League.LeagueEntryDTO[] | undefined;
 };
 
 export type matchData = {
